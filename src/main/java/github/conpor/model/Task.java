@@ -12,15 +12,6 @@ import java.time.LocalDateTime;
 
 public class Task{
 
-    Task() {
-    }
-
-    public Task (String description, LocalDateTime deadline) {
-        this.description = description;
-        this.deadline = deadline;
-    }
-
-
     @Id
     @GeneratedValue(generator = "inc")
     @GenericGenerator(name = "inc", strategy = "increment")
@@ -34,6 +25,24 @@ public class Task{
     @ManyToOne
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
+
+    Task() {
+    }
+
+    public Task (String description, LocalDateTime deadline) {
+        this(description, deadline, null);
+    }
+
+    public Task (String description, LocalDateTime deadline, TaskGroup group) {
+        this.description = description;
+        this.deadline = deadline;
+        if (group != null) {
+            this.group = group;
+        }
+    }
+
+
+
 
 
     public int getId() {

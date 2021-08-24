@@ -1,6 +1,7 @@
 package github.conpor.logic;
 
 
+import github.conpor.model.Project;
 import github.conpor.model.TaskGroup;
 import github.conpor.model.TaskGroupRepository;
 import github.conpor.model.TaskRepository;
@@ -24,7 +25,11 @@ class TaskGroupService {
     }
 
     public GroupReadModel createGroup(final GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 

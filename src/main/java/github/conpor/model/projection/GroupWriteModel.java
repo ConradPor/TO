@@ -17,6 +17,7 @@ public class GroupWriteModel {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public Set<GroupTaskWriteModel> getTasks() {
         return tasks;
     }
@@ -30,15 +31,9 @@ public class GroupWriteModel {
         result.setDescription(description);
         result.setTasks(
                 tasks.stream()
-                    .map(GroupTaskWriteModel::toTask)
+                    .map(source -> source.toTask(result))
                         .collect(Collectors.toSet())
         );
         return result;
-
-
     }
-
-
-
-
 }
