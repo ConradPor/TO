@@ -77,6 +77,14 @@ public class Task{
         this.deadline = deadline;
     }
 
+    TaskGroup getGroup() {
+        return group;
+    }
+
+    void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
+
 
 
     public void updateFrom(final Task source) {
@@ -86,8 +94,4 @@ public class Task{
         group = source.group;
 
     }
-
-
-
-
 }

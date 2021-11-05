@@ -7,6 +7,7 @@ import github.conpor.model.TaskGroupRepository;
 import github.conpor.model.projection.GroupReadModel;
 import github.conpor.model.projection.GroupTaskWriteModel;
 import github.conpor.model.projection.GroupWriteModel;
+import github.conpor.model.projection.ProjectWriteModel;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,16 +16,16 @@ import java.util.stream.Collectors;
 
 public class ProjectService {
 
-    private TaskGroupRepository taskGroupRepository;
     private ProjectRepository repository;
+    private TaskGroupRepository taskGroupRepository;
+    private TaskGroupService taskGroupService;
     private TaskConfigurationProperties config;
-    private TaskGroupService service;
 
-    public ProjectService (final ProjectRepository repository,final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties config, final TaskGroupService service) {
+    public ProjectService(final ProjectRepository repository, final TaskGroupRepository taskGroupRepository, final TaskGroupService taskGroupService, final TaskConfigurationProperties config) {
         this.repository = repository;
         this.taskGroupRepository = taskGroupRepository;
+        this.taskGroupService = taskGroupService;
         this.config = config;
-        this.service = service;
     }
 
 
@@ -32,15 +33,15 @@ public class ProjectService {
         return repository.findAll();
     }
 
-    public Project save(final Project toSave) {
-        return repository.save(toSave);
+    public Project save(final ProjectWriteModel toSave) {
+        return repository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
         if (!config.getTemplate().isAllowMultipleTasks() && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
-            throw new IllegalStateException("Only one undone  group from project is allowed!");
+            throw new IllegalStateException("Only one undone group from project is allowed");
         }
-        GroupReadModel result = repository.findById(projectId)
+        return repository.findById(projectId)
                 .map(project -> {
                     var targetGroup = new GroupWriteModel();
                     targetGroup.setDescription(project.getDescription());
@@ -54,9 +55,9 @@ public class ProjectService {
                                             }
                                     ).collect(Collectors.toSet())
                     );
-                    return service.createGroup(targetGroup);
-                    }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
-        return result;
+                    return taskGroupService.createGroup(targetGroup, project);
+                }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
+
 
     }
 }

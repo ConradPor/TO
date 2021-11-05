@@ -3,7 +3,6 @@ package github.conpor.logic;
 import github.conpor.TaskConfigurationProperties;
 import github.conpor.model.*;
 import github.conpor.model.projection.GroupReadModel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,17 +26,11 @@ class ProjectServiceTest {
 
         //given
         TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
-
-
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(false);
-
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
-
+        var toTest = new ProjectService(null, mockGroupRepository, null, mockConfig);
         //when
-
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
-
         //then
         assertThat(exception)
                 .isInstanceOf(IllegalStateException.class)
@@ -57,7 +48,7 @@ class ProjectServiceTest {
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, null, mockConfig);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
         //then
@@ -79,7 +70,7 @@ class ProjectServiceTest {
 
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, mockGroupRepository, null, mockConfig);
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
         //then
@@ -100,11 +91,12 @@ class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
 
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
+        var serviceWithInMemRepo = dummyGroupService(inMemoryGroupRepo);
         int countBeforeCall = inMemoryGroupRepo.count();
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService (mockRepository, inMemoryGroupRepo, mockConfig);
+        var toTest = new ProjectService (mockRepository, inMemoryGroupRepo, serviceWithInMemRepo, mockConfig);
         //when
         GroupReadModel result = toTest.createGroup(today, 1);
 
@@ -113,6 +105,10 @@ class ProjectServiceTest {
         assertThat(result.getTasks()).allMatch(task ->task.getDescription().equals("foock"));
         assertThat(countBeforeCall+1)
                 .isEqualTo(inMemoryGroupRepo.count());
+    }
+
+    private TaskGroupService dummyGroupService(InMemoryGroupRepository inMemoryGroupRepo) {
+        return new TaskGroupService(inMemoryGroupRepo, null);
     }
 
 

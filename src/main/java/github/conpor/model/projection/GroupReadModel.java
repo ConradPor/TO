@@ -4,11 +4,14 @@ import github.conpor.model.Task;
 import github.conpor.model.TaskGroup;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
+
+
+
+    private int id;
     private String description;
     /**
      * Deadline from the latest task in group.
@@ -17,6 +20,7 @@ public class GroupReadModel {
     private Set<GroupTaskReadModel> tasks;
 
     public GroupReadModel(TaskGroup source) {
+        id = source.getId();
         description = source.getDescription();
         source.getTasks().stream()
                 .map(Task::getDeadline)
@@ -25,6 +29,16 @@ public class GroupReadModel {
         tasks = source.getTasks().stream()
                 .map(GroupTaskReadModel::new)
                 .collect(Collectors.toSet());
+
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {

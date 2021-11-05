@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-class TaskGroupService {
+public class TaskGroupService {
 
     private TaskGroupRepository repository;
     private TaskRepository taskRepository;
