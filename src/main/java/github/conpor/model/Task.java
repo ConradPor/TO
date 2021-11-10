@@ -49,7 +49,7 @@ public class Task{
         return id;
     }
 
-    void setId(final int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -77,11 +77,11 @@ public class Task{
         this.deadline = deadline;
     }
 
-    TaskGroup getGroup() {
+    public TaskGroup getGroup() {
         return group;
     }
 
-    void setGroup(final TaskGroup group) {
+    public void setGroup(final TaskGroup group) {
         this.group = group;
     }
 
