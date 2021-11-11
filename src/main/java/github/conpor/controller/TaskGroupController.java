@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +22,8 @@ import java.net.URI;
 import java.util.List;
 
 
-@RestController
+@Controller
+@IllegalExceptionProcessing
 @RequestMapping("/groups")
 
 class TaskGroupController {
@@ -75,13 +77,14 @@ class TaskGroupController {
     @ResponseBody
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<GroupReadModel>> readAllGroups(Pageable page) {
+
         return ResponseEntity.ok(service.readAll());
     }
 
     @ResponseBody
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Task>> readAllTasksFromGroup(@PathVariable int id) {
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(repository.findAllByGroup_Id(id));
     }
 
     @ResponseBody
@@ -92,15 +95,7 @@ class TaskGroupController {
         return ResponseEntity.noContent().build(); //204
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
-    }
 
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String>handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
 
     @ModelAttribute("groups")
     List<GroupReadModel> getGroups() {

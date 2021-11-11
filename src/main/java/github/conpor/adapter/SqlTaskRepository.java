@@ -1,5 +1,7 @@
-package github.conpor.model;
+package github.conpor.adapter;
 
+import github.conpor.model.Task;
+import github.conpor.model.TaskRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

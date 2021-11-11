@@ -1,5 +1,7 @@
-package github.conpor.model;
+package github.conpor.adapter;
 
+import github.conpor.model.TaskGroup;
+import github.conpor.model.TaskGroupRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

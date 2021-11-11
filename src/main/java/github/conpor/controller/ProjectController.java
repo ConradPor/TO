@@ -5,6 +5,7 @@ import github.conpor.logic.ProjectService;
 import github.conpor.model.Project;
 import github.conpor.model.ProjectStep;
 import github.conpor.model.projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,18 @@ public class ProjectController {
         return "projects";
     }
 
+
+    @PostMapping(params = "/fake/{id}")
+    String createGroupFake(
+            @ModelAttribute("projects") ProjectWriteModel current, Model model,
+            @PathVariable int id,
+            @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline
+
+    ) {
+        return createGroup(current, model, id, deadline);
+    }
+
+    @Timed(value = "project.create.group", histogram = false, percentiles = {0.5, 0.95, 0.99})
     @PostMapping(params = "/{id}")
     String createGroup(
             @ModelAttribute("projects") ProjectWriteModel current, Model model,
