@@ -16,11 +16,11 @@ public class LoggerFilter implements Filter {
 
 
     @Override
-    public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
-        if (servletRequest instanceof HttpServletRequest) {
-            var httpRequest = (HttpServletRequest) servletRequest;
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+        if (request instanceof HttpServletRequest) {
+            var httpRequest = (HttpServletRequest) request;
             logger.info("[doFilter] " + httpRequest.getMethod() + " " + httpRequest.getRequestURI());
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        chain.doFilter(request, response);
     }
 }

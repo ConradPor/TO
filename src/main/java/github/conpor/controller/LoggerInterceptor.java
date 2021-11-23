@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class LoggerInterceptor implements HandlerInterceptor {
-    public static final Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 
 
     @Override
-    public boolean preHandle(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse, final Object object)
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
     {
-        logger.info("[preHandle]" + httpServletRequest.getMethod() + " " + httpServletRequest.getRequestURI());
+        logger.info("[preHandle]" + request.getMethod() + " " + request.getRequestURI());
         return true;
     }
 }
