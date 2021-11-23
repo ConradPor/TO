@@ -3,6 +3,7 @@ package github.conpor.model.projection;
 import github.conpor.model.Project;
 import github.conpor.model.TaskGroup;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +13,18 @@ public class GroupWriteModel {
 
     @NotBlank(message = "Taks group's description must not be empty")
     private String description;
-
+    @Valid
     private List<GroupTaskWriteModel> tasks = new ArrayList<>();
 
     public GroupWriteModel() {
         tasks.add(new GroupTaskWriteModel());
     }
 
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -32,7 +32,7 @@ public class GroupWriteModel {
         return tasks;
     }
 
-    public void setTasks(List<GroupTaskWriteModel> tasks) {
+    public void setTasks(final List<GroupTaskWriteModel> tasks) {
         this.tasks = tasks;
     }
 

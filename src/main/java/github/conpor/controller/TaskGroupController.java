@@ -64,7 +64,7 @@ class TaskGroupController {
     @PostMapping(params = "addTask", produces = MediaType.TEXT_HTML_VALUE)
     String addGroupTask(@ModelAttribute("group") GroupWriteModel current) {
         current.getTasks().add(new GroupTaskWriteModel());
-        return "projects";
+        return "groups";
     }
 
     @ResponseBody
@@ -93,6 +93,16 @@ class TaskGroupController {
     public ResponseEntity<?> toggleGroup(@PathVariable int id) {
         service.toggleGroup(id);
         return ResponseEntity.noContent().build(); //204
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleIllegalState(IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 

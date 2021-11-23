@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
 
-
-
     private int id;
     private String description;
     /**
@@ -47,7 +45,7 @@ public class GroupReadModel {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -55,7 +53,7 @@ public class GroupReadModel {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
     }
 

@@ -25,7 +25,7 @@ public class ProjectWriteModel {  //Change set of steps for list
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -33,7 +33,7 @@ public class ProjectWriteModel {  //Change set of steps for list
         return steps;
     }
 
-    public void setSteps(List<ProjectStep> steps) {
+    public void setSteps(final List<ProjectStep> steps) {
         this.steps = steps;
     }
 
