@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App: projects</title>:
+    <title>Todo App: groups</title>:
     <link rel="stylesheet" href = "https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
     <style>
         .Bd {
@@ -47,7 +47,7 @@
         <dd>
             <a th:href="@{/tasks.html(group=${group.id})}">
             <ul class="P(0)">
-                <li th:each="task : ${group.tasks}" >
+                <li th:each="task : ${group.tasks}">
                     <span th:unless="${task.done}" th:text="${task.description}"></span>
                     <del th:if="${task.done}" th:text="${task.description}"></del>
                 </li>
@@ -57,7 +57,7 @@
     </dl>
     <fieldset>
         <legend> Nowa grupa</legend>
-        <!--/*@thymesVar id="group" type="java.util.List<github.conpor.model.projection.GroupReadModel>"*/-->
+        <!--/*@thymesVar id="group" type="java.util.List<github.conpor.model.projection.GroupWriteModel>"*/-->
     <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
         <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}">
         </p>
